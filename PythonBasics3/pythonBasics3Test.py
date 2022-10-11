@@ -19,6 +19,12 @@ class TestPythonBasicsOne(unittest.TestCase):
 
         # Please add three more test cases following the order above
 
+        self.assertEqual(pythonBasics3.starts_with_non_number(":) is a popular emoji"), True)
+
+        self.assertEqual(pythonBasics3.starts_with_non_number("3D printing"), False)
+
+        self.assertEqual(pythonBasics3.starts_with_non_number("~_~"), True)
+
 #Test case for multiple_words
     def test_multiple_words(self):
 
@@ -33,6 +39,12 @@ class TestPythonBasicsOne(unittest.TestCase):
         self.assertEqual(pythonBasics3.multiple_words(" one-sided? "), False)
 
         # Please add three more test cases following the order above
+
+        self.assertEqual(pythonBasics3.multiple_words("This is my test"), True)
+
+        self.assertEqual(pythonBasics3.multiple_words(" Run-On-Sentence "), False)
+
+        self.assertEqual(pythonBasics3.multiple_words("Peanuts ."), False)
 
 
 #Test case for reserved_us_tld
