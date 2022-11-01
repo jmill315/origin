@@ -20,9 +20,10 @@ def new_note():
 
     print('request method is', request.method)
     if request.method == 'POST':
-        return '<h1> POST method used foor this request </h1>'
+        request_data = request.form
+        return f"data: {request_data} !"
     else:
-        return render_template('new.html', user = a_user) 
+        return render_template('new.html', user = a_user)
 @app.route('/notes/<note_id>')
 def get_note(note_id):
     notes = {1:{'title' : 'First note', 'text' : 'This is my first note', 'date' : '10-1-2020'},
