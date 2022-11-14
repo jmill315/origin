@@ -7,6 +7,8 @@ from flask import render_template
 from flask import request
 from flask import redirect, url_for
 from database import db
+from models import Note as Note
+from models import User as User
 
 
 app = Flask(__name__)     # create an app
@@ -26,7 +28,6 @@ notes = {1:{'title' : 'First note', 'text' : 'This is my first note', 'date' : '
 # @app.route is a decorator. It gives the function "index" special powers.
 # In this case it makes it so anyone going to "your-url/" makes this function
 # get called. What it returns is what is shown as the web page
-@app.route('/')
 
 @app.route('/notes/new', methods=['GET', 'POST'])
 def new_note():
@@ -69,6 +70,7 @@ def get_notes():
 
     return render_template('notes.html', notes=notes, user= a_user)
 
+@app.route('/')
 @app.route('/index')
 def index():
     a_user = db.session.query(User).filter_by(email='jmill315@uncc.edu')
