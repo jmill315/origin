@@ -46,7 +46,7 @@ def new_note():
         db.session.commit()
         return redirect(url_for('get_notes'))
     else:
-        a_user = db.session.query(User).filter_by(email='jmill315@uncc.edu')
+        a_user = db.session.query(User).filter_by(email='jmill315@uncc.edu').one()
         return render_template('new.html', user = a_user)
 @app.route('/notes/<note_id>')
 def get_note(note_id):
@@ -54,8 +54,8 @@ def get_note(note_id):
     #          2 : {'title' : 'Second note', 'text' : 'This is my second note', 'date' : '10-2-2020'},
     #          3 : {'title': 'Third note', 'text': 'This is my third note', 'date': '10-3-2020'}
     #          }
-    a_user = db.session.query(User).filter_by(email='jmill315@uncc.edu')
-    my_note = db.session.query(Note).filter_by(id=note_id)
+    a_user = db.session.query(User).filter_by(email='jmill315@uncc.edu').one()
+    my_note = db.session.query(Note).filter_by(id=note_id).one()
     return render_template('note.html', note = my_note, user = a_user)
 
 @app.route('/notes')
@@ -64,7 +64,7 @@ def get_notes():
     #          2 : {'title' : 'Second note', 'text' : 'This is my second note', 'date' : '10-2-2020'},
     #          3 : {'title': 'Third note', 'text': 'This is my third note', 'date': '10-3-2020'}
     #          }
-    a_user = db.session.query(User).filter_by(email='jmill315@uncc.edu')
+    a_user = db.session.query(User).filter_by(email='jmill315@uncc.edu').one()
 
     my_notes = db.session.query(Note).all()
 
@@ -73,7 +73,7 @@ def get_notes():
 @app.route('/')
 @app.route('/index')
 def index():
-    a_user = db.session.query(User).filter_by(email='jmill315@uncc.edu')
+    a_user = db.session.query(User).filter_by(email='jmill315@uncc.edu').one()
     return render_template('index.html', user=a_user)
 
 
