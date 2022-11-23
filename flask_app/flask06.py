@@ -35,6 +35,14 @@ notes = {1:{'title' : 'First note', 'text' : 'This is my first note', 'date' : '
 # In this case it makes it so anyone going to "your-url/" makes this function
 # get called. What it returns is what is shown as the web page
 
+@app.route('/logout')
+def logout():
+    # check if a user is saved in session
+    if session.get('user'):
+        session.clear()
+
+    return redirect(url_for('index'))
+
 @app.route('/login', methods=['POST', 'GET'])
 def login():
     login_form = LoginForm()
@@ -173,6 +181,9 @@ def index():
 
 
 app.run(host=os.getenv('IP', '127.0.0.1'),port=int(os.getenv('PORT', 5000)),debug=True)
+
+
+
 
 # To see the web page in your web browser, go to the url,
 #   http://127.0.0.1:5000
