@@ -9,11 +9,20 @@
         <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
     </head>
     <nav>
-      <a href="{{url_for('index')}}"> Home</a>||
-      <a href="{{url_for('get_notes')}}">My Notes</a>
-      <a href="{{url_for('new_note')}}">Add Note</a>
-      <a href="{{url_for('login')}}">Sign In</a>
-      <a href="{{url_for('register')}}">Register</a>
+      {% if user %}
+        <nav>
+          <a href="{{url_for('logout')}}">Logout</a>
+          <a href="{{url_for('index')}}">Home</a>
+          <a href="{{url_for('get_notes')}}">My Notes</a>
+          <a href="{{url_for('new_note')}}">Add Note</a>
+        </nav>
+      {% else %}
+        <nav>
+          <a href="{{url_for('index')}}">Home</a>
+          <a href="{{url_for('login')}}">Sign In</a>
+          <a href="{{url_for('register')}}">Register</a>
+        </nav>
+      {% endif %}
     </nav>
     <body>
 
@@ -32,5 +41,25 @@
                 <td>{{ note.date }}</td>
             </tr>
         </table>
+
+        {% if note.comments %}
+  {% if note.comments|length > 0 %}
+    <h2>Comments</h2>
+    <ul>
+    {% for comment in note.comments %}
+      <li>{{ comment.content }}</li>
+    {% endfor %}
+    </ul>
+  {% endif %}
+{% endif %}
+<form action="{{ url_for('new_comment', note_id=note.id) }}" method="post">
+  <div class="formwrapper">
+    <h2 class="title">Add a comment</h2>
+    <div class="form-field">
+      {{ form.comment.label }} <br/> {{ form.comment }}
+    </div>
+    {{ form.submit }}
+  </div>
+</form>
     </body>
 </html>

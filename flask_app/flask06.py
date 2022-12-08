@@ -14,6 +14,8 @@ from models import User as User
 from forms import RegisterForm
 from flask import session
 from forms import LoginForm
+from models import Comment as Comment
+from forms import RegisterForm, LoginForm, CommentForm
 
 
 app = Flask(__name__)     # create an app
@@ -34,6 +36,24 @@ notes = {1:{'title' : 'First note', 'text' : 'This is my first note', 'date' : '
 # @app.route is a decorator. It gives the function "index" special powers.
 # In this case it makes it so anyone going to "your-url/" makes this function
 # get called. What it returns is what is shown as the web page
+
+@app.route('/notes/<note_id>/comment', methods=['POST'])
+def new_comment(note_id):
+    if session.get('user'):
+        comment_form = CommentForm()
+        # validate_on_submit only validates using POST
+        if comment_form.validate_on_submit():
+            # get comment data
+            comment_text = request.form['comment']
+            new_record = Comment(comment_text, int(note_id), session['user_id'])
+            db.session.add(new_record)
+            db.session.commit()
+
+        return redirect(url_for('get_note', note_id=note_id))
+
+    else:
+        return redirect(url_for('login'))
+
 
 @app.route('/logout')
 def logout():
@@ -156,9 +176,12 @@ def get_note(note_id):
     #          2 : {'title' : 'Second note', 'text' : 'This is my second note', 'date' : '10-2-2020'},
     #          3 : {'title': 'Third note', 'text': 'This is my third note', 'date': '10-3-2020'}
     #          }
-    a_user = db.session.query(User).filter_by(email='jmill315@uncc.edu').one()
-    my_note = db.session.query(Note).filter_by(id=note_id).one()
-    return render_template('note.html', note = my_note, user = a_user)
+    if session.get('user'):
+        my_note = db.session.query(Note).filter_by(id=note_id, user_id=session['user_id']).one()
+        form = CommentForm()
+        return render_template('note.html', note=my_note, user=session['user'], form=form)
+    else:
+        return redirect(url_for('login'))
 
 @app.route('/notes')
 def get_notes():

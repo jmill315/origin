@@ -10,11 +10,20 @@
     </head>
 
     <nav>
-      <a href="{{url_for('index')}}"> Home</a>||
-      <a href="{{url_for('get_notes')}}">My Notes</a>
-      <a href="{{url_for('new_note')}}">Add Note</a>
-      <a href="{{url_for('login')}}">Sign In</a>
-      <a href="{{url_for('register')}}">Register</a>
+      {% if user %}
+        <nav>
+          <a href="{{url_for('logout')}}">Logout</a>
+          <a href="{{url_for('index')}}">Home</a>
+          <a href="{{url_for('get_notes')}}">My Notes</a>
+          <a href="{{url_for('new_note')}}">Add Note</a>
+        </nav>
+      {% else %}
+        <nav>
+          <a href="{{url_for('index')}}">Home</a>
+          <a href="{{url_for('login')}}">Sign In</a>
+          <a href="{{url_for('register')}}">Register</a>
+        </nav>
+      {% endif %}
     </nav>
     <body>
 
